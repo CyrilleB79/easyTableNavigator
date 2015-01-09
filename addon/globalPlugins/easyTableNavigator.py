@@ -16,6 +16,11 @@ import addonHandler
 import ui
 import tones #Debugging
 
+# Keep a tuple of candidate tree interceptors and object types handy.
+TNDocObjs=(
+	(winword.WordDocument),
+)
+
 # For Microsoft Word: code from MS Word document object, pasted here for convenience.
 def _MSWordTableNavAvailable(document):
 	info=document.makeTextInfo(textInfos.POSITION_CARET)
@@ -35,17 +40,26 @@ def _MSWordTableNavAvailable(document):
 		return False
 	return True
 
+# For docs, return the needed lookup function based on class name.
+# Placed here since Python complains that callable names cannot be found.
+TNDocObjTesters={
+	"_WwG":_MSWordTableNavAvailable,
+}
+
+# Actual table navigator tester (to be called throughout the life of the plugin).
 def tableNavAvailable(obj=None):
 	# Depending on object type, figure out if we're in a table.
 	focus = api.getFocusObject() if obj is None else obj
-	if isinstance(focus.treeInterceptor, virtualBuffers.VirtualBuffer):
+	if focus.treeInterceptor and isinstance(focus.treeInterceptor, virtualBuffers.VirtualBuffer):
 		try:
 			focus.treeInterceptor._getTableCellCoords(focus.treeInterceptor.selection)
 			return True
 		except LookupError, WindowsError:
 			return False
-	elif isinstance(focus, winword.WordDocument):
-		return _MSWordTableNavAvailable(focus)
+	elif isinstance(focus, TNDocObjs):
+		testFunc = TNDocObjTesters[focus.windowClassName]
+		return testFunc(focus)
+	return False
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
