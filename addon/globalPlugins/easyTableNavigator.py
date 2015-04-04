@@ -128,5 +128,5 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		focus.treeInterceptor.script_previousColumn(gesture) if isinstance(focus.treeInterceptor, virtualBuffers.VirtualBuffer) else focus.script_previousColumn(gesture)
 
 	__gestures={
-		"kb:NvDA+Shift+T":"toggleTableNav",
+		#"kb:NvDA+Shift+T":"toggleTableNav",
 	}

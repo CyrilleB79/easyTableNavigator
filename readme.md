@@ -12,7 +12,7 @@ Currently supported tables are:
 
 ## Commands
 
-* NvDA+Shift+T: Toggles table navigator on and off.
+* Toggles table navigator layer on and off (unassigned).
 
 ## Changes for 1.0
 
