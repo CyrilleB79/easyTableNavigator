@@ -1,7 +1,8 @@
 # Easy Table Navigator
 
 *   Author: Joseph Lee
-*   Download [development version][2]
+* Download [stable version][1]
+* Download [development version][2]
 
 This plugin adds a layer command to use arrow keys to navigate table cells.
 
@@ -18,5 +19,6 @@ Currently supported tables are:
 
 *   Initial release.
 
+[1]: http://addons.nvda-project.org/files/get.php?file=etn
 
 [2]: http://addons.nvda-project.org/files/get.php?file=etn-dev
