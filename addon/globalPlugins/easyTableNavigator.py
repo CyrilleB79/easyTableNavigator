@@ -57,7 +57,10 @@ def tableNavAvailable(obj=None):
 		except LookupError, WindowsError:
 			return False
 	elif isinstance(focus, TNDocObjs):
-		testFunc = TNDocObjTesters[focus.windowClassName]
+		try:
+			testFunc = TNDocObjTesters[focus.windowClassName]
+		except KeyError:
+			return False
 		return testFunc(focus)
 	return False
 
