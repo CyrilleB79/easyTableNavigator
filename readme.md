@@ -15,6 +15,10 @@ Currently supported tables are:
 
 * Toggles table navigator layer on and off (unassigned).
 
+## Changes for 1.2
+
+* Internal changes to support future NVDA releases.
+
 ## Changes for 1.1
 
 * Fixed an issue where errors might be heard when spell checking a message in Outlook.
