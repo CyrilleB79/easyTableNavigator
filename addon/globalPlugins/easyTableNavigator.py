@@ -54,7 +54,7 @@ def tableNavAvailable(obj=None):
 		try:
 			focus.treeInterceptor._getTableCellCoords(focus.treeInterceptor.selection)
 			return True
-		except LookupError, WindowsError:
+		except (LookupError, WindowsError):
 			return False
 	elif isinstance(focus, TNDocObjs):
 		try:
