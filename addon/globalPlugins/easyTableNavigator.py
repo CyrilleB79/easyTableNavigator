@@ -12,9 +12,9 @@ import virtualBuffers # For browse mode.
 from NVDAObjects.window import winword # Microsoft Word.
 import textInfos
 import controlTypes
-import addonHandler
 import ui
-import tones #Debugging
+import addonHandler
+addonHandler.initTranslation()
 
 # Keep a tuple of candidate tree interceptors and object types handy.
 TNDocObjs=(
