@@ -19,7 +19,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description" : _("""Allows using just arrow keys to navigate between table cells via a dedicated layer."""),
 	# version
-	"addon_version" : "1.3",
+	"addon_version" : "2.0",
 	# Author(s)
 	"addon_author" : u"Joseph Lee <joseph.lee22590@gmail.com>",
 	# URL for the add-on documentation support
