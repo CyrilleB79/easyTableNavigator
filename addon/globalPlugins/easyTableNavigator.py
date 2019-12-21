@@ -83,17 +83,20 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_toggleTableNav(self, gesture):
 		if not tableNavAvailable():
-			ui.message("Not in a table")
+			# Translators: presented when a user is not in a table.
+			ui.message(_("Not in a table"))
 		else:
 			if not self.tableNav:
 				self.tableNav = True
 				self.bindTableNavGestures()
-				ui.message("Table navigator on")
+				# Translators: presented when table navigator layer is on.
+				ui.message(_("Table navigator on"))
 			else:
 				self.tableNav = False
 				self.clearGestureBindings()
 				self.bindGestures(self.__gestures)
-				ui.message("Table navigator off")
+				# Translators: presented when table navigator layer is off.
+				ui.message(_("Table navigator off"))
 	script_toggleTableNav.__doc__="Toggles table navigation layer on or off. When active, arrow keys can be used to navigate between cells"
 	# Since this plugin really has one command, it is fine to define a script category like this.
 	script_toggleTableNav.category = "Easy Table Navigator"
