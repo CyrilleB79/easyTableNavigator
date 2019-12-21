@@ -1,6 +1,6 @@
 ﻿# Easy Table Navigator
 # A global plugin for NvDA
-# Copyright 2015 Joseph Lee, released under GPL
+# Copyright 2015-2020 Joseph Lee, released under GPL
 
 # Allows NVDA to navigate to next or previous column/row just by using arrow keys.
 # The results should be similar to table layer in JAWS.
