@@ -13,6 +13,7 @@ from NVDAObjects.window import winword # Microsoft Word.
 import textInfos
 import controlTypes
 import ui
+import scriptHandler
 import addonHandler
 addonHandler.initTranslation()
 
@@ -81,6 +82,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			pass
 		nextHandler()
 
+	@scriptHandler.script(
+		# Translators: input help mode message for Table Navigator toggle command.
+		description=_("Toggles table navigation layer on or off. When active, arrow keys can be used to navigate between cells"),
+		# Translators: command category for the add-on.
+		category=_("Easy Table Navigator")
+	)
 	def script_toggleTableNav(self, gesture):
 		if not tableNavAvailable():
 			# Translators: presented when a user is not in a table.
@@ -97,9 +104,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				self.bindGestures(self.__gestures)
 				# Translators: presented when table navigator layer is off.
 				ui.message(_("Table navigator off"))
-	script_toggleTableNav.__doc__="Toggles table navigation layer on or off. When active, arrow keys can be used to navigate between cells"
-	# Since this plugin really has one command, it is fine to define a script category like this.
-	script_toggleTableNav.category = "Easy Table Navigator"
 
 	# Some utility functions.
 	def bindTableNavGestures(self):
