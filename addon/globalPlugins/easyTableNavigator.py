@@ -108,31 +108,22 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.bindGesture("kb:downarrow", "nextRow")
 		self.bindGesture("kb:uparrow", "prevRow")
 
-	def tableNavHelper(self, obj, script, gesture):
-		obj.treeInterceptor.script(gesture) if isinstance(obj.treeInterceptor, virtualBuffers.VirtualBuffer) else obj.script(gesture)
-
 	# Table navigation commands.
 
 	def script_nextRow(self, gesture):
-		#self.tableNavHelper(api.getFocusObject(), script_nextRow, gesture)
 		focus = api.getFocusObject()
 		focus.treeInterceptor.script_nextRow(gesture) if isinstance(focus.treeInterceptor, virtualBuffers.VirtualBuffer) else focus.script_nextRow(gesture)
 
 	def script_prevRow(self, gesture):
-		#self.tableNavHelper(api.getFocusObject(), script_previousRow, gesture)
 		focus = api.getFocusObject()
 		focus.treeInterceptor.script_previousRow(gesture) if isinstance(focus.treeInterceptor, virtualBuffers.VirtualBuffer) else focus.script_previousRow(gesture)
 
 	def script_nextColumn(self, gesture):
-		#self.tableNavHelper(api.getFocusObject(), script_nextColumn, gesture)
 		focus = api.getFocusObject()
 		focus.treeInterceptor.script_nextColumn(gesture) if isinstance(focus.treeInterceptor, virtualBuffers.VirtualBuffer) else focus.script_nextColumn(gesture)
 
 	def script_prevColumn(self, gesture):
-		#self.tableNavHelper(api.getFocusObject(), script_previousColumn, gesture)
 		focus = api.getFocusObject()
 		focus.treeInterceptor.script_previousColumn(gesture) if isinstance(focus.treeInterceptor, virtualBuffers.VirtualBuffer) else focus.script_previousColumn(gesture)
 
-	__gestures={
-		#"kb:NvDA+Shift+T":"toggleTableNav",
-	}
+	__gestures = {}
