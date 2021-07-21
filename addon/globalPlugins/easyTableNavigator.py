@@ -1,4 +1,5 @@
-﻿# Easy Table Navigator
+# This Python file uses the following encoding: utf-8
+# Easy Table Navigator
 # A global plugin for NvDA
 # Copyright 2015-2020 Joseph Lee, released under GPL
 
