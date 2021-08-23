@@ -19,6 +19,7 @@ Currently supported tables are:
 ## Changes for 2.2
 
 * Update documentation style from addons template
+* First translated version
 
 ## Changes for 2.1.1
 
