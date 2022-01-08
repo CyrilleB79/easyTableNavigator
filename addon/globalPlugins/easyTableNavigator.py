@@ -12,11 +12,13 @@ import config
 import virtualBuffers # For browse mode.
 from NVDAObjects.window import winword # Microsoft Word.
 import textInfos
+from . import compa
 import controlTypes
 import ui
 import scriptHandler
 import addonHandler
 addonHandler.initTranslation()
+controlTypes = compa.convertControlTypes(controlTypes)
 
 # Keep a tuple of candidate tree interceptors and object types handy.
 TNDocObjs=(
@@ -30,7 +32,7 @@ def _MSWordTableNavAvailable(document):
 	formatConfig=config.conf['documentFormatting'].copy()
 	formatConfig['reportTables']=True
 	commandList=info.getTextWithFields(formatConfig)
-	if len(commandList)<3 or commandList[1].field.get('role',None)!=controlTypes.ROLE_TABLE or commandList[2].field.get('role',None)!=controlTypes.ROLE_TABLECELL:
+	if len(commandList)<3 or commandList[1].field.get('role',None)!=controlTypes.Role.TABLE or commandList[2].field.get('role',None)!=controlTypes.Role.TABLECELL:
 		return False
 	rowCount=commandList[1].field.get('table-rowcount',1)
 	columnCount=commandList[1].field.get('table-columncount',1)
