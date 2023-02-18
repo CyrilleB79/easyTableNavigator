@@ -1,4 +1,4 @@
-## Changes for 2.3
+## Changes for 2.4
 
 For this release, many thanks goes to Cyrille Bougot for his work.
 * Table navigation fixed in MS Word
