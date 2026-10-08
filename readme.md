@@ -17,6 +17,8 @@ Currently supported tables are:
 * Browse mode (Internet Explorer, Firefox, etc.).
 * Microsoft Word.
 
+If [Markdown Navigator](https://addonstore.nvaccess.org/?addonId=markdownNavigator) add-on is installed and markdown browse mode is active, navigation to neighbour cells with arrows is also supported in markdown tables.
+
 ## Commands
 
 * Toggles table navigator layer on and off (unassigned).
