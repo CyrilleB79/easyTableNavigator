@@ -53,19 +53,6 @@ def _MSWordUIATableNavAvailable(document):
 	except LookupError:
 		return False
 
-def _markdownTableNavAvailable(focus):
-	if not getattr(focus, "markdownBrowseMode", False):
-		return False
-	# from .document import FastDocumentManager
-	# from . import patterns
-	import globalPlugins
-	FastDocumentManager = globalPlugins.markdownNavigator.document.FastDocumentManager
-	patterns = globalPlugins.markdownNavigator.patterns
-
-	with FastDocumentManager(focus) as fdm:
-		currentLineText = fdm.getText()
-	return patterns.RE_TABLE.match(currentLineText)
-
 # For docs, return the needed lookup function based on class name.
 # Placed here since Python complains that callable names cannot be found.
 TNDocObjTesters={
@@ -82,8 +69,8 @@ def tableNavAvailable(obj=None):
 		except KeyError:
 			return False
 		return testFunc(focus)
-	elif getMarkdownEditorOverlayClass() and isinstance(focus, getMarkdownEditorOverlayClass()):
-		return _markdownTableNavAvailable(focus)
+	elif mdNBridge and isinstance(focus, mdNBridge.overlayClass):
+		return mdNBridge.tableNavAvailable(focus)
 	elif (
 		isinstance(focus.treeInterceptor, documentBase.DocumentWithTableNavigation)
 		and not focus.treeInterceptor.passThrough
@@ -95,29 +82,65 @@ def tableNavAvailable(obj=None):
 			return False
 	return False
 
+mdNBridge = None
 
-def getMarkdownNavigatorGlobalPlugin():
-	import globalPlugins
-	import globalPluginHandler
+def initializeMarkdownNavigatorBridge():
+	global mdNBridge
+	mdNBridge = MarkdownNavigatorBridge()
 
-	try:
-		gpClass = globalPlugins.markdownNavigator.GlobalPlugin
-	except AttributeError:
-		return None
-	return next(p for p in list(globalPluginHandler.runningPlugins) if isinstance(p, gpClass))
+class MarkdownNavigatorBridge:
 
+	def __init__(self):
+		self.overlayClass = self._getOverlayClass()
 
-def getMarkdownEditorOverlayClass():
-	import globalPlugins
-	import globalPluginHandler
+	def __bool__(self):
+		return self.isAvailable()
 
-	try:
-		return globalPlugins.markdownNavigator.MarkdownEditorOverlay
-	except AttributeError:
-		return None
+	def isAvailable(self):
+		return self.overlayClass is not None
+
+	@staticmethod
+	def _getOverlayClass():
+		import globalPlugins
+
+		try:
+			return globalPlugins.markdownNavigator.MarkdownEditorOverlay
+		except AttributeError:
+			return None
+
+	@staticmethod
+	def tableNavAvailable(focus):
+		if not getattr(focus, "markdownBrowseMode", False):
+			return False
+		import globalPlugins
+		FastDocumentManager = globalPlugins.markdownNavigator.document.FastDocumentManager
+		patterns = globalPlugins.markdownNavigator.patterns
+	
+		with FastDocumentManager(focus) as fdm:
+			currentLineText = fdm.getText()
+		return patterns.RE_TABLE.match(currentLineText)
+
+	@staticmethod
+	def tableNavigationHelper(focus, move, gesture):
+		navScriptMapping = {
+			"previousRow": "script_tableRowUp",
+			"nextRow": "script_tableRowDown",
+			"previousColumn": "script_prevTableCell",
+			"nextColumn": "script_nextTableCell",
+		}
+		try:
+			scriptName = navScriptMapping[move]
+		except KeyError:
+			ui.message(_("Command unavailable for markdown tables"))
+			return
+		getattr(focus, scriptName)(gesture)
 
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
+
+	def __init__(self, *args, **kw):
+		super().__init__(*args, *kw)
+		initializeMarkdownNavigatorBridge()
 
 	# Control table layer entry.
 	tableNav = False
@@ -197,26 +220,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		):
 			getattr(focus.treeInterceptor, f'script_{move}')(gesture)
 		else:
-			mdClass = getMarkdownEditorOverlayClass()
-			if mdClass and isinstance(focus, mdClass):
-				if not self._markdownTableNavigationHelper(focus, move, gesture):
-					ui.message(_("Command unavailable for markdown tables"))
+			if mdNBridge and isinstance(focus, mdNBridge.overlayClass):
+				mdNBridge.tableNavigationHelper(focus, move, gesture)
 				return		
 			getattr(focus, f'script_{move}')(gesture)
-
-	def _markdownTableNavigationHelper(self, focus, move, gesture):
-		navScriptMapping = {
-			"previousRow": "script_tableRowUp",
-			"nextRow": "script_tableRowDown",
-			"previousColumn": "script_prevTableCell",
-			"nextColumn": "script_nextTableCell",
-		}
-		try:
-			scriptName = navScriptMapping[move]
-		except KeyError:
-			return False
-		getattr(focus, scriptName)(gesture)
-		return True
 
 	def script_nextRow(self, gesture):
 		self.tableNavigationHelper(gesture, 'nextRow')
